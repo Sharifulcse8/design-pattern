@@ -1,0 +1,110 @@
+// Step 1: Define the Strategy Interfaces
+interface FlyBehavior {
+    void fly();
+}
+
+interface QuackBehavior {
+    void quack();
+}
+
+// Step 2: Create Concrete Fly Behaviors
+class FlyWithWings implements FlyBehavior {
+    public void fly() {
+        System.out.println("I'm flying with wings!");
+    }
+}
+
+class NoFly implements FlyBehavior {
+    public void fly() {
+        System.out.println("I can't fly.");
+    }
+}
+
+// Step 3: Create Concrete Quack Behaviors
+class QuackLoud implements QuackBehavior {
+    public void quack() {
+        System.out.println("Quack! Quack!");
+    }
+}
+
+class MuteQuack implements QuackBehavior {
+    public void quack() {
+        System.out.println("<< Silence >>");
+    }
+}
+
+// Step 4: Define the Duck Class
+abstract class Duck {
+    protected FlyBehavior flyBehavior;
+    protected QuackBehavior quackBehavior;
+
+    public void performFly() {
+        flyBehavior.fly();
+    }
+
+    public void performQuack() {
+        quackBehavior.quack();
+    }
+
+    public void setFlyBehavior(FlyBehavior fb) {
+        this.flyBehavior = fb;
+    }
+
+    public void setQuackBehavior(QuackBehavior qb) {
+        this.quackBehavior = qb;
+    }
+
+    public void swim() {
+        System.out.println("All ducks can swim.");
+    }
+
+    public abstract void display(); // Each duck has its own appearance
+}
+
+// Step 5: Create Specific Ducks
+class MallardDuck extends Duck {
+    public MallardDuck() {
+        flyBehavior = new FlyWithWings();
+        quackBehavior = new QuackLoud();
+    }
+
+    public void display() {
+        System.out.println("I'm a Mallard Duck.");
+    }
+}
+
+class RubberDuck extends Duck {
+    public RubberDuck() {
+        flyBehavior = new NoFly();
+        quackBehavior = new MuteQuack();
+    }
+
+    public void display() {
+        System.out.println("I'm a Rubber Duck.");
+    }
+}
+
+// Step 6: Demonstrate the Strategy Pattern
+public class StrategyPatternExample {
+    public static void main(String[] args) {
+        Duck mallard = new MallardDuck();
+        mallard.display();
+        mallard.performFly();
+        mallard.performQuack();
+
+        System.out.println("\nChanging behavior dynamically...\n");
+
+        Duck rubberDuck = new RubberDuck();
+        rubberDuck.display();
+        rubberDuck.performFly();
+        rubberDuck.performQuack();
+
+        // Changing rubber duck behavior dynamically
+        rubberDuck.setFlyBehavior(new FlyWithWings());
+        rubberDuck.setQuackBehavior(new QuackLoud());
+
+        System.out.println("\nAfter changing behavior dynamically:");
+        rubberDuck.performFly();
+        rubberDuck.performQuack();
+    }
+}
