@@ -1,0 +1,55 @@
+public interface Bread{
+    void prepare();
+}
+class whiteBread implements Bread{
+    public void prepare(){
+        System.out.println("White bread preparing...");
+    }
+}
+
+class wheatBread implements Bread{
+    public void prepare(){
+        System.out.println("Wheat bread preparing...");
+    }
+}
+
+class garlicBread implements Bread{
+    public void prepare(){
+        System.out.println("Garlic bread preparing...");
+    }
+}
+
+class BreadFactory{
+    public static Bread getBread(String breadType){
+        if(breadType.equalsIgnoreCase("white")){
+            return new whiteBread();
+        }else if(breadType.equalsIgnoreCase("wheat")){
+            return new wheatBread();
+        }else if(breadType.equalsIgnoreCase("garlic")){
+            return new garlicBread();
+        }else{
+            throw new IllegalArgumentException("Unknown Bread type :"+breadType);
+        }
+    }
+}
+
+public class Main2 {
+    public static void main(String[] args) {
+        try {
+            Bread bread1 = BreadFactory.getBread("white");
+            bread1.prepare();
+
+            Bread bread2 = BreadFactory.getBread("wheat");
+            bread2.prepare();
+
+            Bread bread3 = BreadFactory.getBread("garlic");
+            bread3.prepare();
+
+            Bread bread4 = BreadFactory.getBread("sugarbread");
+            bread4.prepare();
+
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+}
