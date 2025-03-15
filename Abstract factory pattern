@@ -1,0 +1,97 @@
+// Abstract Product A - Chair
+interface Chair {
+    void sitOn();
+}
+
+// Abstract Product B - Table
+interface Table {
+    void placeItem();
+}
+
+// Concrete Product A1 - Wooden Chair
+class WoodenChair implements Chair {
+    @Override
+    public void sitOn() {
+        System.out.println("Sitting on a Wooden Chair.");
+    }
+}
+
+// Concrete Product A2 - Plastic Chair
+class PlasticChair implements Chair {
+    @Override
+    public void sitOn() {
+        System.out.println("Sitting on a Plastic Chair.");
+    }
+}
+
+// Concrete Product B1 - Wooden Table
+class WoodenTable implements Table {
+    @Override
+    public void placeItem() {
+        System.out.println("Placing items on a Wooden Table.");
+    }
+}
+
+// Concrete Product B2 - Plastic Table
+class PlasticTable implements Table {
+    @Override
+    public void placeItem() {
+        System.out.println("Placing items on a Plastic Table.");
+    }
+}
+
+// Abstract Factory - Furniture Factory
+interface FurnitureFactory {
+    Chair createChair();
+    Table createTable();
+}
+
+// Concrete Factory 1 - Wooden Furniture Factory
+class WoodenFurnitureFactory implements FurnitureFactory {
+    @Override
+    public Chair createChair() {
+        return new WoodenChair();
+    }
+
+    @Override
+    public Table createTable() {
+        return new WoodenTable();
+    }
+}
+
+// Concrete Factory 2 - Plastic Furniture Factory
+class PlasticFurnitureFactory implements FurnitureFactory {
+    @Override
+    public Chair createChair() {
+        return new PlasticChair();
+    }
+
+    @Override
+    public Table createTable() {
+        return new PlasticTable();
+    }
+}
+
+// Client Code
+public class Main {
+    public static void main(String[] args) {
+        // Choosing the type of furniture (Wooden or Plastic)
+        String furnitureType = "Wood"; // Change to "Plastic" for plastic furniture
+
+        // Selecting the correct factory
+        FurnitureFactory factory;
+        if (furnitureType.equalsIgnoreCase("Wood")) {
+            factory = new WoodenFurnitureFactory();
+        } else {
+            factory = new PlasticFurnitureFactory();
+        }
+
+        // Creating furniture using the factory
+        Chair chair = factory.createChair();
+        Table table = factory.createTable();
+
+        // Using the furniture
+        chair.sitOn();
+        table.placeItem();
+    }
+}
