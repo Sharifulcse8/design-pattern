@@ -1,0 +1,39 @@
+// Singleton Database Connection Manager
+public class DatabaseConnection {
+    // Step 1: Create a private static instance of the class
+    private static DatabaseConnection instance;
+
+    // Step 2: Private constructor to prevent instantiation from outside
+    private DatabaseConnection() {
+        System.out.println("Database Connection Initialized.");
+    }
+
+    // Step 3: Public method to provide global access to the instance
+    public static DatabaseConnection getInstance() {
+        if (instance == null) {
+            instance = new DatabaseConnection();
+        }
+        return instance;
+    }
+
+    // Example method to simulate a database query
+    public void executeQuery(String sql) {
+        System.out.println("Executing Query: " + sql);
+    }
+}
+
+// Main Class to Test Singleton Pattern
+public class Main {
+    public static void main(String[] args) {
+        // Getting the single instance of DatabaseConnection
+        DatabaseConnection db1 = DatabaseConnection.getInstance();
+        db1.executeQuery("SELECT * FROM users");
+
+        // Trying to get another instance
+        DatabaseConnection db2 = DatabaseConnection.getInstance();
+        db2.executeQuery("UPDATE users SET name='John' WHERE id=1");
+
+        // Checking if both instances are the same
+        System.out.println("Are both database connections the same? " + (db1 == db2));
+    }
+}
