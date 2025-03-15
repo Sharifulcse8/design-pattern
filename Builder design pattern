@@ -1,0 +1,76 @@
+// Product Class
+class Burger {
+    private String bun;
+    private String patty;
+    private String sauce;
+    
+    public void setBun(String bun) { this.bun = bun; }
+    public void setPatty(String patty) { this.patty = patty; }
+    public void setSauce(String sauce) { this.sauce = sauce; }
+
+    public void showBurger() {
+        System.out.println("Burger with " + bun + ", " + patty + ", and " + sauce);
+    }
+}
+
+// Builder Interface
+interface BurgerBuilder {
+    void buildBun();
+    void buildPatty();
+    void buildSauce();
+    Burger getBurger();
+}
+
+// Concrete Builder for Veg Burger
+class VegBurgerBuilder implements BurgerBuilder {
+    private Burger burger = new Burger();
+
+    public void buildBun() { burger.setBun("Whole Wheat Bun"); }
+    public void buildPatty() { burger.setPatty("Veg Patty"); }
+    public void buildSauce() { burger.setSauce("Tomato Sauce"); }
+    public Burger getBurger() { return burger; }
+}
+
+// Concrete Builder for Chicken Burger
+class ChickenBurgerBuilder implements BurgerBuilder {
+    private Burger burger = new Burger();
+
+    public void buildBun() { burger.setBun("Sesame Bun"); }
+    public void buildPatty() { burger.setPatty("Chicken Patty"); }
+    public void buildSauce() { burger.setSauce("BBQ Sauce"); }
+    public Burger getBurger() { return burger; }
+}
+
+// Director Class
+class Director {
+    private BurgerBuilder builder;
+
+    public Director(BurgerBuilder builder) { this.builder = builder; }
+    
+    public void makeBurger() {
+        builder.buildBun();
+        builder.buildPatty();
+        builder.buildSauce();
+    }
+
+    public Burger getBurger() { return builder.getBurger(); }
+}
+
+// Client Code
+public class Main {
+    public static void main(String[] args) {
+        // Making a Veg Burger
+        BurgerBuilder vegBuilder = new VegBurgerBuilder();
+        Director director1 = new Director(vegBuilder);
+        director1.makeBurger();
+        Burger vegBurger = director1.getBurger();
+        vegBurger.showBurger();
+
+        // Making a Chicken Burger
+        BurgerBuilder chickenBuilder = new ChickenBurgerBuilder();
+        Director chef2 = new Director(chickenBuilder);
+        chef2.makeBurger();
+        Burger chickBurger = chef2.getBurger();
+        chickBurger.showBurger();
+    }
+}
