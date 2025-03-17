@@ -1,0 +1,39 @@
+// Step 1: Target Interface (Expected by Old Phone)
+interface MicroUSBPhone {
+    void chargeWithMicroUSB();
+}
+
+// Step 2: Adaptee (New Charger Uses Type-C)
+class TypeCCharger {
+    public void chargeWithTypeC() {
+        System.out.println("⚡ Charging with Type-C charger...");
+    }
+}
+
+// Step 3: Adapter (Converts Type-C to Micro-USB)
+class TypeCtoMicroUSBAdapter implements MicroUSBPhone {
+    private TypeCCharger typeCCharger;
+
+    public TypeCtoMicroUSBAdapter(TypeCCharger typeCCharger) {
+        this.typeCCharger = typeCCharger;
+    }
+
+    public void chargeWithMicroUSB() {
+        System.out.println("🔄 Using Adapter...");
+        typeCCharger.chargeWithTypeC(); // Converts Type-C charging to Micro-USB
+    }
+}
+
+// Step 4: Client Code (Old Phone Uses New Charger via Adapter)
+public class PhoneCharging {
+    public static void main(String[] args) {
+        // New Type-C Charger
+        TypeCCharger newCharger = new TypeCCharger();
+
+        // Adapter allows old phone (Micro-USB) to use new charger
+        MicroUSBPhone oldPhone = new TypeCtoMicroUSBAdapter(newCharger);
+        
+        // Charging the old phone
+        oldPhone.chargeWithMicroUSB();
+    }
+}
