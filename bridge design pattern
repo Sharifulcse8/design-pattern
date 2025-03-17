@@ -1,0 +1,76 @@
+// Step 1: Define the Implementor Interface (Message)
+interface Message {
+    void send();  // Corrected method name to be more appropriate
+}
+
+// Step 2: Concrete Implementations (Email, SMS)
+class Email implements Message {
+    @Override
+    public void send() {
+        System.out.println("Message sent via Email...");
+    }
+}
+
+class SMS implements Message {
+    @Override
+    public void send() {
+        System.out.println("Message sent via SMS...");
+    }
+}
+
+// Step 3: Define the Abstraction (MessageAbstraction)
+abstract class MessageAbstraction {
+    protected Message message;  // Bridge to the Implementation
+
+    public MessageAbstraction(Message message) {
+        this.message = message;
+    }
+
+    public void send() {
+        message.send();  // Delegates sending to the implementation
+    }
+
+    public abstract void perform();
+}
+
+// Step 4: Define the Refined Abstractions (RegularMessage, UrgentMessage)
+class RegularMessage extends MessageAbstraction {
+    public RegularMessage(Message message) {
+        super(message);
+    }
+
+    @Override
+    public void perform() {
+        System.out.println("This is a Regular Message.");
+    }
+}
+
+class UrgentMessage extends MessageAbstraction {
+    public UrgentMessage(Message message) {
+        super(message);
+    }
+
+    @Override
+    public void perform() {
+        System.out.println("This is an Urgent Message! Send it quickly.");
+    }
+}
+
+// Step 5: Client Code (Main)
+public class Main {
+    public static void main(String[] args) {
+        // Sending a Regular Message via Email
+        Message email = new Email();
+        MessageAbstraction regularEmail = new RegularMessage(email);
+        regularEmail.send();
+        regularEmail.perform();
+
+        System.out.println("\n----------------\n");
+
+        // Sending an Urgent Message via SMS
+        Message sms = new SMS();
+        MessageAbstraction urgentSMS = new UrgentMessage(sms);
+        urgentSMS.send();
+        urgentSMS.perform();
+    }
+}
