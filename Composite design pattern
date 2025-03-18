@@ -1,0 +1,67 @@
+import java.util.ArrayList;
+import java.util.List;
+
+// Step 1: Define the common interface
+interface OrderItem {
+    double getPrice();
+}
+
+// Step 2: Create the Product class (Leaf node)
+class Product implements OrderItem {
+    private double price;
+
+    public Product(double price) {
+        this.price = price;
+    }
+
+    @Override
+    public double getPrice() {
+        return price;
+    }
+}
+
+// Step 3: Create the Box class (Composite node)
+class Box implements OrderItem {
+    private List<OrderItem> items = new ArrayList<>();
+    private double packagingCost;
+
+    public Box(double packagingCost) {
+        this.packagingCost = packagingCost;
+    }
+
+    public void addItem(OrderItem item) {
+        items.add(item);
+    }
+
+    @Override
+    public double getPrice() {
+        double total = packagingCost;
+        for (OrderItem item : items) {
+            total += item.getPrice();
+        }
+        return total;
+    }
+}
+
+// Step 4: Main class to test the implementation
+public class Main {
+    public static void main(String[] args) {
+        // Creating individual products
+        Product laptop = new Product(1500);
+        Product phone = new Product(1000);
+        Product charger = new Product(500);
+
+        // Creating a small box and adding items
+        Box smallBox = new Box(5);
+        smallBox.addItem(phone);
+        smallBox.addItem(charger);
+
+        // Creating a big box and adding a laptop and the small box
+        Box bigBox = new Box(10);
+        bigBox.addItem(laptop);
+        bigBox.addItem(smallBox);
+
+        // Calculating total price
+        System.out.println("Total price of Products: " + bigBox.getPrice());
+    }
+}
