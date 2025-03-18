@@ -1,0 +1,68 @@
+// Step 1: Base Abstract Class for Pizza (Component)
+abstract class BasePizza {
+    abstract double cost();
+}
+
+// Step 2: Concrete Pizza Classes
+class FarmHouse extends BasePizza {
+    public double cost() {
+        return 100;
+    }
+}
+
+class VegLight extends BasePizza {
+    public double cost() {
+        return 200;
+    }
+}
+
+// Step 3: Decorator Abstract Class
+abstract class Decorator extends BasePizza {
+    protected BasePizza basePizza;
+
+    public Decorator(BasePizza basePizza) {
+        this.basePizza = basePizza;
+    }
+
+    public double cost() {
+        return basePizza.cost();
+    }
+}
+
+// Step 4: Concrete Topping Decorators
+class ExtraCheese extends Decorator {
+    public ExtraCheese(BasePizza basePizza) {
+        super(basePizza);
+    }
+
+    public double cost() {
+        return super.cost() + 10;
+    }
+}
+
+class ExtraMushroom extends Decorator {
+    public ExtraMushroom(BasePizza basePizza) {
+        super(basePizza);
+    }
+
+    public double cost() {
+        return super.cost() + 15;
+    }
+}
+
+// Step 5: Client Code (Main Method)
+public class Main {
+    public static void main(String[] args) {
+        // Order 1: FarmHouse Pizza with Extra Cheese
+        BasePizza pizza1 = new ExtraCheese(new FarmHouse());
+        System.out.println("FarmHouse Pizza with Extra Cheese Cost: " + pizza1.cost());
+
+        // Order 2: VegLight Pizza with Extra Mushroom
+        BasePizza pizza2 = new ExtraMushroom(new VegLight());
+        System.out.println("VegLight Pizza with Extra Mushroom Cost: " + pizza2.cost());
+
+        // Order 3: FarmHouse Pizza with Extra Cheese and Extra Mushroom
+        BasePizza pizza3 = new ExtraMushroom(new ExtraCheese(new FarmHouse()));
+        System.out.println("FarmHouse Pizza with Extra Cheese and Extra Mushroom Cost: " + pizza3.cost());
+    }
+}
