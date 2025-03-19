@@ -1,0 +1,32 @@
+public class HotelManager{
+    public void bookRoom(String customer){
+        System.out.println("Room booked for "+customer+" by hotel Manager.");
+    }
+}
+
+class HotelReceptionist{
+    private HotelManager hotelManager;
+
+    public HotelReceptionist(){
+        this.hotelManager= new HotelManager();//initializing Hotel Manager as a Proxy
+    }
+
+    public void bookRoom(String customer, boolean hasAppointment){
+        if(hasAppointment){
+            System.out.println("Receptionist: Customer "+customer+ " has an appointment.");
+            hotelManager.bookRoom(customer);
+        }else{
+            System.out.println("Receptionist: Customer "+customer+ "has not any appointment.");
+        }
+    }
+}
+
+public class Main{
+    public static void main(String[] args) {
+        HotelReceptionist receptionist = new HotelReceptionist();
+
+        receptionist.bookRoom("Shariful", true);
+
+        receptionist.bookRoom("Ariful",false);
+    }
+}
