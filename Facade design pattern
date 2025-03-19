@@ -1,0 +1,62 @@
+class Light{
+    public void turnOn(){
+        System.out.println("Light is turn ON!");
+    }
+    public void turnOff(){
+        System.out.println("Light is turn OFF!");
+    }
+}
+
+class TV{
+    public void turnOn(){
+        System.out.println("TV is turn ON!");
+    }
+    public void turnOff()
+    {
+        System.out.println("TV is turn OFF!");
+    }
+}
+
+class AirConditioner{
+    public void turnOn(){
+        System.out.println("Air Conditioner is turn ON!");
+    }
+    public void turnOff(){
+        System.out.println("Air Condition is turn OFF!");
+    }
+}
+
+class HomeFacade{
+    private Light light;
+    private TV tv;
+    private AirConditioner airConditioner;
+
+    public HomeFacade(){
+        this.light= new Light();
+        this.tv= new TV();
+        this.airConditioner= new AirConditioner();
+    }
+
+    public void activeMorningMode(){
+        System.out.println("Activate Morning Mode...");
+        light.turnOn();
+        tv.turnOn();
+        airConditioner.turnOn();
+    }
+
+    public void activeNightMode(){
+        System.out.println("Activate Night Mode...");
+        light.turnOff();
+        tv.turnOff();
+        airConditioner.turnOff();
+    }
+}
+
+public class Main{
+    public static void main(String[] args) {
+        HomeFacade  command = new HomeFacade();
+        command.activeMorningMode();
+        System.out.println("After 12 hours,");
+        command.activeMorningMode();
+    }
+}
