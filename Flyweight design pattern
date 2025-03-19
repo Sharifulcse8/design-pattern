@@ -1,0 +1,58 @@
+class SoldierType{//shared object
+    private String uniform;
+    private String weapon;
+
+    public SoldierType(String uniform, String weapon){
+        this.uniform=uniform;
+        this.weapon=weapon;
+    }
+
+    public void display(String position){
+        System.out.println("Soldier at "+position+ "| Uniform: "+uniform+ "| Weapon: "+weapon);
+    }
+}
+
+import java.util.HashMap;
+
+class SoldierFactory{
+    private static final HashMap<String, SoldierType> soldierTypes= new HashMap<>();
+
+    public static SoldierType getSoldierType(String uniform, String weapon){
+        String key = uniform + ", " +weapon;
+
+        if(!soldierTypes.containsKey(key)){
+            soldierTypes.put(key, new SoldierType(uniform,  weapon));
+            System.out.println("Creating new SoldierType : "+key);
+        }
+        return soldierTypes.get(key);
+    }
+}
+
+class Soldier{//Uses shared SoldierType but has unique position
+    private String position;
+    private SoldierType type;
+ 
+    public Soldier(String position, SoldierType type){
+     this.position=position;
+     this.type=type;
+    }
+ 
+    public void display(){
+       type.display(position);
+    }
+ }
+
+ public class Main {
+    public static void main(String[] args) {
+        SoldierType sniper = SoldierFactory.getSoldierType("Camouflage", "Sniper Rifle");
+        SoldierType rifleman = SoldierFactory.getSoldierType("Green Uniform", "Assault Rifle");
+
+        Soldier soldier1 = new Soldier("A1", sniper);
+        Soldier soldier2 = new Soldier("A2", rifleman);
+        Soldier soldier3 = new Soldier("A3", sniper);
+
+        soldier1.display();
+        soldier2.display();
+        soldier3.display();
+    }
+}
