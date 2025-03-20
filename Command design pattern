@@ -1,0 +1,67 @@
+interface Order{//this is Command
+    void execute();
+}
+
+class Chef{//this is Receiver and he is know how to cook
+    public void cookPizza(){
+        System.out.println("Chef cooked the pizza.");
+    }
+
+    public void cookPista(){
+        System.out.println("Chef cooked the pasta.");
+    }
+}
+
+class PizzaOrder implements Order{//concrete command
+    private Chef chef;
+
+    public PizzaOrder(Chef chef){
+        this.chef=chef;
+    }
+
+    public void execute(){
+        chef.cookPizza();
+    }
+}
+
+class PastaOrder implements Order{//concrete command
+    private Chef chef;
+
+    public PastaOrder(Chef chef){
+        this.chef=chef;
+    }
+
+    public void execute(){
+        chef.cookPista();
+    }
+}
+
+class Waiter{// this is Invoker who takes the commmand and deliever it to the receiver
+    private Order order;
+
+    public void takeOrder(Order order){
+        this.order=order;
+    }
+
+    public void takeOrdertoKitchen(){
+        System.out.println("Waiter take the order to the Kitchen...");
+        order.execute();
+    }
+}
+
+public class Main{
+    public static void main(String[] args) {
+        Chef chef = new Chef();
+        Waiter waiter = new Waiter();
+
+        Order PizzaOrder = new PastaOrder(chef);
+        waiter.takeOrder(PizzaOrder);
+        waiter.takeOrdertoKitchen();
+
+        System.out.println("\n");
+        
+        Order PastaOrder = new PastaOrder(chef);
+        waiter.takeOrder(PastaOrder);
+        waiter.takeOrdertoKitchen();
+    }
+}
