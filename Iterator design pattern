@@ -1,0 +1,97 @@
+interface Iterator{
+    boolean hasNext();
+    String next();
+}
+
+interface ReverseIterator{
+    boolean hasPrevious();
+    String previous();
+}
+
+interface Collection{
+    void addSong(String song);
+    void removeSong(String song);
+    Iterator iterator();
+    ReverseIterator reverseIterator();
+}
+
+import java.util.ArrayList;
+import java.util.List;
+
+class SongCollection implements Collection{
+    private List<String> songs = new ArrayList<>();
+
+    public void addSong(String song){
+        songs.add(song);
+    }
+
+    public void removeSong(String song){
+        songs.remove(song);
+    }
+
+    public Iterator iterator(){
+        return new PlaylistIterator(songs);
+    }
+
+    public ReverseIterator reverseIterator(){
+        return new ReversePlaylistIterator(songs);
+    }
+}
+
+import java.util.List;
+class PlaylistIterator implements Iterator{
+    private List<String>songs;
+    private int position=0;
+
+    public PlaylistIterator(List<String>songs){
+        this.songs=songs;
+    }
+
+    public boolean hasNext(){
+        return position<songs.size();
+    }
+
+    public String next(){
+        return songs.get(position++);
+    }
+}
+
+import java.util.List;
+class ReversePlaylistIterator implements ReverseIterator{
+      private List<String> songs;
+      private int position;
+
+      public ReversePlaylistIterator(List<String>songs){
+        this.songs=songs;
+        this.position=songs.size()-1;
+      }
+
+      public boolean hasPrevious(){
+         return position>=0;
+      }
+
+      public String previous(){
+        return songs.get(position--);
+      }
+}
+
+public class Main{
+    public static void main(String[] args) {
+        SongCollection sg= new SongCollection();
+        sg.addSong("O bondhu tumi sunte ki pao");
+        sg.addSong("bahudore");
+        sg.addSong("Mon mane na...");
+
+        System.out.println("\n Forward Playlist: ");
+        Iterator it = sg.iterator();
+        while(it.hasNext()){
+            System.out.println("Now Playing: "+it.next());
+        }
+
+        System.out.println("\n Reverse Playlist: ");
+        ReverseIterator rit = sg.reverseIterator();
+        while(rit.hasPrevious()){
+            System.out.println("Now Playing: "+rit.previous());
+        }
+    }
+}
