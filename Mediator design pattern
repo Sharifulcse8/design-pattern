@@ -1,0 +1,123 @@
+interface ATMMediator{
+    void insertCard();
+    void enterPin(int pin);
+    void requestCash(double amount);
+    void ejectCard();
+}
+
+class CardReader{
+    private ATMMediator atmMediator;
+
+    public CardReader(ATMMediator atmMediator){
+        this.atmMediator=atmMediator;
+    }
+
+    public void readCard(){
+        System.out.println("Card Inserted.");
+    }
+
+    public void ejectCard(){
+        System.out.println("Card Ejected.");
+    }
+}
+
+class DispenseCash{
+    private ATMMediator atmMediator;
+
+    public DispenseCash(ATMMediator atmMediator){
+        this.atmMediator=atmMediator;
+    }
+
+    public void dispenseCash(double amount){
+        System.out.println("Amount: "+amount);
+    }
+}
+
+class BankServer{
+    private ATMMediator atmMediator;
+    private double balance;
+
+    public BankServer(ATMMediator atmMediator){
+        this.atmMediator=atmMediator;
+    }
+
+    public boolean validatePin(int pin){
+         return pin==pin;
+    }
+
+    public boolean hasSufficientBalance(double amount){
+        return amount<=balance;
+    }
+
+    public void debitCash(double amount){
+        balance-=amount;
+        System.out.println("New Balance: "+balance);
+    }
+}
+
+class ATMMachine implements ATMMediator{
+    private CardReader cardReader;
+    private DispenseCash dispenseCash;
+    private  BankServer bankServer;
+
+    public ATMMachine(){
+        this.cardReader= new CardReader(this);
+        this.dispenseCash= new DispenseCash(this);
+        this.bankServer = new BankServer(this);
+    }
+
+    public void insertCard(){
+        cardReader.readCard();
+    }
+
+    public void enterPin(int pin){
+        if(bankServer.validatePin(pin)){
+           System.out.println("PIN Verified.");
+        }else{
+            System.out.println("Invalid PIN.");
+        }
+    }
+
+    public void requestCash(double amount){
+        if(bankServer.hasSufficientBalance(amount)){
+            dispenseCash.dispenseCash(amount);
+            bankServer.debitCash(amount);
+        }else{
+            System.out.println("Insufficient Balance.");
+        }
+    }
+
+    public void ejectCard(){
+        cardReader.ejectCard();
+    }
+}
+
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        ATMMachine atm = new ATMMachine();
+        Scanner sc = new Scanner(System.in);
+
+        atm.insertCard();
+        
+        System.out.print("Enter PIN: ");
+        int pin = sc.nextInt();
+        atm.enterPin(pin);
+        
+        System.out.print("Enter amount to withdraw: ");
+        int amount = sc.nextInt();
+        atm.requestCash(amount);
+        System.out.print("Do you want to eject the card? (yes/no): ");
+        sc.nextLine();
+        String choice = sc.nextLine();
+
+        if(choice.equalsIgnoreCase("yes")){
+        atm.ejectCard();
+        }else{
+            System.out.println("Card not Rejected.");
+        }
+        
+        sc.close(); 
+   }
+}
