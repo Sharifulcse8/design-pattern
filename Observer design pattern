@@ -1,0 +1,60 @@
+interface Observer{
+    void update(String topics);
+}
+
+import java.util.ArrayList;
+import java.util.List;
+
+class QuranlyApp{
+     private List<Observer> observers = new ArrayList<>();
+     private String topics;
+
+     public void addObserver(Observer observer){
+        observers.add(observer);
+     }
+
+     public void removeObserver(Observer observer){
+        observers.remove(observer);
+     }
+
+     public void notifyObservers(){
+        for(Observer observer:observers){
+            observer.update(topics);
+        }
+     }
+
+     public void postNewTopics(String topic){
+        this.topics=topic;
+        notifyObservers();
+     }
+}
+
+class User implements Observer{
+    private String userName;
+
+    public User(String userName){
+        this.userName=userName;
+    }
+
+    public void update(String topics){
+        System.out.println(userName+ " has been notified about a new topic : "+topics);
+    }
+}
+
+public class Main{
+    public static void main(String[] args) {
+        QuranlyApp  qp =  new QuranlyApp();
+
+        User user1 = new User("Sharif");
+        User user2 = new User("Arif");
+
+        qp.addObserver(user1);
+        qp.addObserver(user2);
+
+        qp.postNewTopics("Complete 10 buz in 10 night in Ramdan.");
+
+        qp.removeObserver(user2);
+        qp.postNewTopics("Reminder today is Friday, so Read sura Kahf.");
+
+    }
+}
