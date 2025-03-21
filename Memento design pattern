@@ -1,0 +1,70 @@
+class TextMemento{//it is a Memento
+    private final String text;
+
+    public TextMemento(String text){
+        this.text=text;
+    }
+
+    public String getText(){
+        return text;
+    }
+}
+
+class TextEditor{// it is a originator that creates a new Memento & save the current state & restore previous state from Memento
+    private String text="";
+
+    public void write(String newText){
+        text+=newText;
+    }
+
+    public String getText(){
+        return text;
+    }
+
+    public TextMemento save(){
+        return new TextMemento(text);
+    }
+
+    public void restore(TextMemento memento){
+        text=memento.getText();
+    }
+}
+
+import java.util.Stack;
+class History{// it is a caretaker which manages saved states means undo functionality
+    private Stack<TextMemento> history = new Stack<>();
+
+    public void save(TextEditor editor){
+        history.push(editor.save());
+    }
+
+    public void undo(TextEditor editor){
+        if(!history.isEmpty()){
+           editor.restore(history.pop());
+        }else{
+            System.out.println("Null");
+        }
+    }
+}
+
+public class Main{
+    public static void main(String[] args) {
+        TextEditor editor = new TextEditor();
+        History history = new History();
+
+        editor.write("Hello, ");
+        history.save(editor);
+
+        editor.write("World");
+        history.save(editor);
+
+        System.out.println("Current text: "+editor.getText());
+
+        history.undo(editor);
+        System.out.println("After Undo: "+editor.getText());
+
+        history.undo(editor);
+        System.out.println("After Undo: "+editor.getText());
+
+    }
+}
