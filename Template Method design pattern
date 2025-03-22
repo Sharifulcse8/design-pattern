@@ -1,0 +1,60 @@
+abstract class FoodTemplate{
+    public final void prepareandserver(){
+        PrepareIngredients();
+        Cook();
+        Serve();
+    }
+
+    protected abstract void PrepareIngredients();
+    protected abstract void Cook();
+
+    private void Serve(){
+        System.out.println("Serving the Food.");
+    }
+}
+
+class Burger extends FoodTemplate{
+    protected void PrepareIngredients(){
+        System.out.println("Preparing Burger Ingredients...");
+    }
+
+    protected void Cook(){
+        System.out.println("Grilling the Burger...");
+    }
+}
+
+class Pasta extends FoodTemplate{
+    protected void PrepareIngredients(){
+        System.out.println("Preparing Pasta Ingredients...");
+    }
+
+    protected void Cook(){
+        System.out.println("Boiling the Pasta...");
+    }
+}
+
+class Pizza extends FoodTemplate{
+    protected void PrepareIngredients(){
+        System.out.println("Preparing Pizza Ingredients...");
+    }
+
+    protected void Cook(){
+        System.out.println("Baking the Pizza...");
+    }
+}
+
+
+
+public  class Main{
+    public static void main(String[] args) {
+        System.out.println("---Pizza---");
+        FoodTemplate food = new Pizza();
+        food.prepareandserver();
+        System.out.println("\n---Burger---");
+        FoodTemplate food2= new Burger();
+        food2.prepareandserver();
+        System.out.println("\n---Pasta---");
+        FoodTemplate food3 = new Pasta();
+        food3.prepareandserver();
+    }
+}
