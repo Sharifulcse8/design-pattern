@@ -1,0 +1,91 @@
+interface ShopVisitor{
+    double visit(Book book);
+    double visit(Clothing clothing);
+}
+
+class ConcreteShopVisitor implements ShopVisitor{
+    public double visit(Book book) {
+        double cost = book.getPrice();
+        if (cost > 50) {
+            cost -= 5; // Apply a $5 discount for expensive books
+        }
+        System.out.println("Book: " + book.getName() + " -> Price: $" + cost);
+        return cost;
+    }
+
+    public double visit(Clothing clothing) {
+        System.out.println("Clothing: " + clothing.getName() + " -> Price: $" + clothing.getPrice());
+        return clothing.getPrice();
+    }
+
+}
+
+interface Item{// Element
+    double accept(ShopVisitor visitor);
+}
+
+class Book implements Item{//Concrete Element
+    private String name;
+    private double price;
+
+    public Book(String name, double price){
+       this.name=name;
+       this.price=price;
+    }
+
+    public String getName(){
+       return name;
+    }
+
+    public double getPrice(){
+       return price;
+    }
+
+    public double accept(ShopVisitor visitor){
+       return visitor.visit(this);
+    }
+}
+
+class Clothing implements Item{//Concrete Element
+    private String name;
+    private double price;
+
+    public Clothing(String name, double price){
+       this.name=name;
+       this.price=price;
+    }
+
+    public String getName(){
+       return name;
+    }
+
+    public double getPrice(){
+       return price;
+    }
+
+    public double accept(ShopVisitor visitor){
+       return visitor.visit(this);
+    }
+}
+
+
+
+public class Main{
+    public static void main(String[] args) {
+        Item[] cart = new Item[]{
+            new Book("Design Patterns",40),
+            new Book("Java Progaramming",55),
+            new Clothing("T-shirt",25)
+        };
+
+        ShopVisitor visitor = new ConcreteShopVisitor();
+        double totalcost=0;
+
+        System.out.println("\n Shopping Cart Items: ");
+        for(Item item:cart){
+           totalcost+=item.accept(visitor);
+        }
+        System.out.println("\nTotal Price: "+totalcost);
+    }
+}
+//now we can also add the new funcionality like tax calculation in Visitor and Element
