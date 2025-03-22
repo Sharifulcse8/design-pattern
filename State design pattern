@@ -1,0 +1,59 @@
+interface FanState{
+    void PressButton(Fan fan);
+}
+
+class OffState implements FanState{
+    public void PressButton(Fan fan){
+        System.out.println("Fan is OFF");
+        fan.setState(new LowState());
+    }
+}
+
+class LowState implements FanState{
+    public void PressButton(Fan fan){
+        System.out.println("Fan is running at Low Speed.");
+        fan.setState(new MediumSpeed());
+    }
+}
+
+class MediumSpeed implements FanState{
+    public void PressButton(Fan fan){
+        System.out.println("Fan is running at Medium Speed.");
+        fan.setState(new HighState());
+    }
+}
+
+class HighState implements FanState{
+    public void PressButton(Fan fan){
+        System.out.println("Fan is running at High Speed.");
+        fan.setState(new OffState());
+    }
+}
+
+class Fan{
+    private FanState state;
+
+    public Fan(){
+        state= new OffState();
+    }
+
+    public void setState(FanState state){
+        this.state=state;
+    }
+
+    public void PressButton(){
+        state.PressButton(this);
+    }
+}
+
+public class Main{
+    public static void main(String[] args) {
+        Fan fan = new Fan();
+
+        fan.PressButton();
+        fan.PressButton();
+        fan.PressButton();
+        fan.PressButton();
+    }
+}
+
